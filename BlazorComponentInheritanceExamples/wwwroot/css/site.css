@@ -26,3 +26,11 @@
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.code {
+    font-family: monospace;
+}
+
+.border {
+    border: 1px solid blue;
+}

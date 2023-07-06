@@ -1,0 +1,13 @@
+﻿@inherits SimpleBaseComponent
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        Header = "Header from derived component as .razor";
+        base.OnInitialized();
+    }
+}

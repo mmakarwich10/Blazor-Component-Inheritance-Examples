@@ -1,3 +1,87 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Simple Inheritance</h1>
+<div>
+    <p>
+        This shows a component (SimpleDerivedComponent.cs) inheriting a simple string that can be manipulated, from a base component (SimpleBaseComponent.razor).
+    </p>
+    <ul>
+        <li>
+            <p>Here's the base component <code>&lt;SimpleBaseComponent&gt;&lt;/SimpleBaseComponent&gt;</code> by itself:</p>
+            <SimpleBaseComponent></SimpleBaseComponent>
+        </li>
+        <li>
+            <p>
+                Here's the derived component <code>&lt;SimpleDerivedComponent&gt;&lt;/SimpleDerivedComponent&gt;</code>, 
+                but we set the <code>Header</code> property inherited from <code>&lt;SimpleBaseComponent&gt;&lt;/SimpleBaseComponent&gt;</code>:
+            </p>
+            <SimpleDerivedComponent></SimpleDerivedComponent>
+        </li>
+    </ul>
+</div>
+<h1>Inheritance with a Derived .razor Component</h1>
+<div>
+    <p>
+        This shows a .razor component (RazorDerivedComponent.razor) that is also inheriting from 
+        <code>&lt;SimpleBaseComponent&gt;&lt;/SimpleBaseComponent&gt;</code>.
+        Because each derived component automatically overrides the base component's <code>BuildRenderTree()</code> (which renders the markup),
+        you have to call the function manually, where you would normally put markup. This is done like so:
+    </p>
+    <p> 
+        <pre>
+            <code>
+                @("@{\n" +
+                        "\tbase.BuildRenderTree(__builder);\n" +
+                    "}")
+            </code>
+        </pre>
+    </p>
+    <p>
+        What is <span class="code">__builder</span>, you ask? 
+        It's a <span class="code">RenderTreeBuilder</span> object, and it seems to be a part of Blazor's framework, 
+        so this feels a little hacky, but it seems to be the only way to achieve component-to-component markup inheritance.
+    </p>
+    <RazorDerivedComponent></RazorDerivedComponent>
+</div>
+<h1><code>RenderFragment</code> Inheritance</h1>
+<div>
+    <p>
+        This shows a .razor component (RenderFragmentDerivedComponent.razor) that inherits a <code>RenderFragment</code> from a base component 
+        (RenderFragmentBaseComponent.razor).
+        What is a <code>RenderFragment</code>? It's, essentially, a chunk of markup that can be set independent of the component that defines it, 
+        yet it will be rendered (generally), within the component that defines it. Typically, this is used as a component parameter like so:
+    </p>
+    <p>
+        <pre>
+            <code>
+                @("<Component>\n" +
+                    "\t<RenderFragment>\n" +
+                        "\t\t<div>\n" +
+                            "\t\t\tSome Markup here\n" +
+                        "\t\t</div>\n" +
+                    "\t</RenderFragment>\n" +
+                "</Component>")
+            </code>
+        </pre>
+    </p>
+    <p>
+        But, it can also be set in the <code>@("@code {}")</code> block, similar to how you would set a property of a class:
+    </p>
+    <p>
+        <pre>
+            <code>
+                @("@code {\n" +
+                    "\tRenderFragment = \n" +
+                        "\t\t@<div>\n" +
+                            "\t\t\tSome Markup here\n" +
+                        "\t\t</div>;\n" +
+                "}")
+            </code>
+        </pre>
+    </p>
+    <p>
+        <code>RenderFragment</code> properties, like any other, can be inherited! 
+        I recommend setting them in the <code>OnInitialized()</code> component lifecycle hook, as this example does.
+    </p>
+    <RenderFragmentDerivedComponent></RenderFragmentDerivedComponent>
+</div>

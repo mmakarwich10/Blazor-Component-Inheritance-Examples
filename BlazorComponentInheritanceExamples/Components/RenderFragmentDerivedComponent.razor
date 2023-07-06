@@ -1,0 +1,16 @@
+﻿@inherits RenderFragmentBaseComponent
+
+@{
+    base.BuildRenderTree(__builder);
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        RenderFragmentToInherit =
+            @<h4>
+                This is a header 4 inherited from the base component and set in the derived component!
+            </h4>;
+        base.OnInitialized();
+    }
+}
